@@ -17,7 +17,19 @@ def ridge(data):
     return weight @ data
     
 def lasso(data):
-    pass
+    x, y = read_data()
+    weight = np.array([0, 0, 0, 0, 0, 0])
+    label = 2e-5
+    alpha = 0.01
+    a = 1e-12
+    for i in range(int(2e6)):
+        z = np.dot(x, weight)
+        loss = np.dot((z - y).T, z - y) + alpha * np.sum(abs(weight))
+        if loss < label:
+            break
+        dw = np.dot(z - y, x) + np.sign(weight)
+        weight = weight - a * dw
+    return weight @ data
 
 def read_data(path='./data/exp02/'):
     x = np.load(path + 'X_train.npy')
