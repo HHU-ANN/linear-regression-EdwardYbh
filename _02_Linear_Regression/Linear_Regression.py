@@ -11,7 +11,7 @@ except ImportError as e:
 def ridge(data):
     x, y = read_data()
     I = np.eye(6)
-    alpha = 0.00001
+    alpha = -0.00001
     weight = np.dot(np.linalg.inv(np.matmul(x.T, x) + np.dot(alpha,I )), np.dot(x.T, y))
     print(np.dot(alpha, I))
     return data @ weight
@@ -27,7 +27,7 @@ def lasso(data):
         loss = np.dot((z - y).T, z - y) + alpha * np.sum(abs(weight))
         if loss < label:
             break
-        dw = np.dot(z-y, x) + np.sign(weight)
+        dw = np.dot(x.T,z-y ) + alpha*6
         weight = weight - a * dw
     return data @ weight
 
